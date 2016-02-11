@@ -1,5 +1,7 @@
 'use strict';
 
+let Item = require('./item.js');
+
 class Drone {
 	constructor(maxWeight, location, world) {
 		this.maxWeight = maxWeight;
@@ -9,55 +11,53 @@ class Drone {
 		this.world = world;
 	}
 
-	canLoadItem(item) {
+	canLoadItem(type) {
 		let itemWeight = 0;
 		
 		if (Array.isArray) {
-			for (let i of item) {
-				itemWeight += i.getWeight();
+			for (let t of type) {
+				itemWeight += Item.getWeight(type);
 			}
 		} else {
-			itemWeight = item.getWeight();
+			itemWeight = Item.getWeight(type);
 		}
 
 		return (itemWeight + this.currentWeight <= this.maxWeight);
 	}
 
-	load(item) {
-		if (!canLoadItem(item)) {
+	load(type) {
+		if (!canLoadItem(type)) {
 			console.error("Drone cannot load item.");
 		} else {
-			if (Array.isArray(item)) {
-				for (let i of item) {
-					load(item);
+			if (Array.isArray(type)) {
+				for (let t of type) {
+					load(type);
 				}
 			} else {
-				this.items.push(item);
-				this.currentWeight += item.getWeight();
+				this.items.push(type);
+				this.currentWeight += Item.getWeight(type);
 			}
 		}
 	}
 
-	deliver(item) {
-		if (Array.isArray(item)) {
-			for (let i of item) {
-				deliver(item);
-			}
-		}
-
-		let found = false;
-		for (let i = 0; i < this.items; i++) {
-			if (this.items[i].type === item.type) {
-				this.items[i].splice(i, 1);
-				found = true;
-				break;
-			}
-		}
-
-		if (found) {
-			this.currentWeight -= item.getWeight();
+	deliver(type) {
+		if (Array.isArray(type)) {
+			type.forEach(t => this.remove(t))
 		} else {
-			console.error("Drone cannot deliver.")
+			let found = false;
+			for (let i = 0; i < this.items; ++i) {
+				if (this.items[i] == type) {
+					this.items[i].splice(i, 1)
+					found = true
+					break
+				}
+			}
+
+			if (found) {
+				this.currentWeight -= item.getWeight();
+			} else {
+				console.error("Drone cannot deliver.")
+			}
 		}
 	}
 

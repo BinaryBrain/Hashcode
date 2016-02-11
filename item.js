@@ -1,17 +1,14 @@
 'use strict'
 
-class Item {
-	constructor(type, weight) {
-		this.type = type;
-		this.weight = weight;
-	}
+let Item = {
+	weights: [],
 
-	getWeight() {
-		return this.weight;
-	}
+	getWeight(type) {
+		return this.weights[type];
+	},
 
-	getType() {
-		return this.type;
+	setWeight(type, weight) {
+		this.weights[type] = weight;
 	}
 }
 
