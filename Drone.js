@@ -61,4 +61,4 @@ class Drone {
 	}
 }
 
-module.export = Drone;
+module.exports = Drone;
