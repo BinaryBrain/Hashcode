@@ -46,7 +46,7 @@ let ordersNb = parseInt(data[currLine])
 for (let i = 0; i < ordersNb; ++i) {
     let deliveredLocation = data[currLine].split(' ')
     let productsNb = parseInt(data[currLine + 1])
-    let productsType = parseInt(data[currLine + 2])
+    let productsType = data[currLine + 2].split(' ')
 
     world.orders.push(new Order(i, deliveredLocation, productsType));
 
@@ -68,7 +68,7 @@ while (turnsLeft) {
 	// GAME LOGIC
 
 	for (let drone of world.drones) {
-		// drone.tick();
+		drone.tick();
 	}
 
 	turnsLeft--;
