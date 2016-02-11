@@ -59,6 +59,18 @@ class Drone {
 			console.error("Drone cannot deliver.")
 		}
 	}
+
+	travel(dest) {
+		this.dest = dest;
+		this.tickToGo = dist(this.location, this.dest);
+	}
+}
+
+function dist(a, b) {
+	let x = Math.abs(a[0] - b[0]);
+	let y = Math.abs(a[1] - b[1]);
+
+	return Math.ceil(Math.sqrt(x * x + y * y));
 }
 
 module.exports = Drone;

@@ -62,5 +62,15 @@ for (let i = 0; i < ordersNb; ++i) {
     currLine += 3
 }
 
-console.log(warehouses)
-console.log(orders)
+// console.log(warehouses)
+// console.log(orders)
+
+let turnsLeft = world.turns;
+while (turnsLeft) {
+	// GAME LOGIC
+
+	
+
+	turnsLeft--;
+}
+
