@@ -13,7 +13,7 @@ class Drone {
 
 	canLoadItem(type) {
 		let itemWeight = 0;
-		
+
 		if (Array.isArray) {
 			for (let t of type) {
 				itemWeight += Item.getWeight(type);
@@ -41,23 +41,24 @@ class Drone {
 	}
 
 	deliver(type) {
-		if (Array.isArray(type)) {
-			type.forEach(t => this.remove(t))
-		} else {
-			let found = false;
-			for (let i = 0; i < this.items; ++i) {
-				if (this.items[i] == type) {
-					this.items[i].splice(i, 1)
-					found = true
-					break
-				}
-			}
+		if (!Array.isArray(type)) {
+			type = []
+			type.push(type)
+		}
 
-			if (found) {
-				this.currentWeight -= item.getWeight();
-			} else {
-				console.error("Drone cannot deliver.")
+		let found = false;
+		for (let i = 0; i < this.items; ++i) {
+			if (this.items[i] == type) {
+				this.items[i].splice(i, 1)
+				found = true
+				break
 			}
+		}
+
+		if (found) {
+			this.currentWeight -= item.getWeight();
+		} else {
+			console.error("Drone cannot deliver.")
 		}
 	}
 
