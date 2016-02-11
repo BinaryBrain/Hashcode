@@ -3,6 +3,7 @@
 const fs = require('fs');
 const Item = require('./item.js')
 const Warehouse = require('./Warehouse.js')
+const Journal = require('./Journal.js')
 const Drone = require('./Drone.js')
 const Order = require('./order.js')
 
@@ -72,3 +73,5 @@ while (turnsLeft) {
 
 	turnsLeft--;
 }
+
+console.log(Journal.getOutput());
