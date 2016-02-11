@@ -60,6 +60,10 @@ class Drone {
 		}
 	}
 
+	giveOrder(order) {
+		this.order = order;
+	}
+
 	travel(dest) {
 		this.dest = dest;
 		this.tickToGo = dist(this.location, this.dest);

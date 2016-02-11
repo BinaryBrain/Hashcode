@@ -7,12 +7,12 @@ let input = './input/busy_day.in'
 
 let data = fs.readFileSync(input).toString().split("\n")
 
-console.log(data);
-
-let warehouses = []
-let orders = []
+// console.log(data);
 
 let world = {}
+
+world.warehouses = []
+world.orders = []
 
 let line = data[0].split(' ')
 world.width = line[0]
@@ -37,7 +37,7 @@ for (let i = 0; i < warehousesNb;  i++) {
         n = parseInt(n)
         for (var j = 0; j < n; ++j) {
             let item = new Item(t, weighs[t])
-            warehouses.push(item)
+            world.warehouses.push(item)
         }
     })
 
@@ -56,20 +56,20 @@ for (let i = 0; i < ordersNb; ++i) {
 
     for (let j = 0; j < productsNb; ++j) {
         let item = new Item(productsType, weighs[productsType])
-        orders.push(item)
+        world.orders.push(item)
     }
 
     currLine += 3
 }
 
-// console.log(warehouses)
-// console.log(orders)
+// console.log(world.warehouses)
+// console.log(world.orders)
 
 let turnsLeft = world.turns;
 while (turnsLeft) {
 	// GAME LOGIC
 
-	
+
 
 	turnsLeft--;
 }
