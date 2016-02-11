@@ -1,11 +1,12 @@
 'use strict';
 
 class Drone {
-	constructor(maxWeight, location) {
+	constructor(maxWeight, location, world) {
 		this.maxWeight = maxWeight;
 		this.location = location;
 		this.items = [];
 		this.currentWeight = 0;
+		this.world = world;
 	}
 
 	canLoadItem(item) {

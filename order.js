@@ -15,7 +15,7 @@ class Order {
 	// @param items Item or array of Items
 	deliver(items) {
 		if (Array.isArray(items)) {
-			for (var i = 0; i < items.length) {
+			for (var i = 0; i < items.length; i++) {
 				item = items[i];
 				this.addItem(item);
 			}

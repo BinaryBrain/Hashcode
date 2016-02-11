@@ -2,6 +2,9 @@
 
 const fs = require('fs');
 const Item = require('./item.js')
+const Warehouse = require('./Warehouse.js')
+const Drone = require('./Drone.js')
+const Order = require('./order.js')
 
 let input = './input/busy_day.in'
 
@@ -17,7 +20,8 @@ world.orders = []
 let line = data[0].split(' ')
 world.width = line[0]
 world.height = line[1]
-world.drones = line[2]
+world.dronesNb = line[2]
+world.drones = []
 world.turns = line[3]
 world.payload = line[4]
 // console.log(world)
@@ -32,14 +36,18 @@ for (let i = 0; i < warehousesNb;  i++) {
     let products = data[currLine + 1].split(' ')
     // console.log(products)
 
+    let items = [];
+
     products.forEach((n, t) => {
         // console.log(`- ${n} items of prod ${t}`);
         n = parseInt(n)
         for (var j = 0; j < n; ++j) {
             let item = new Item(t, weighs[t])
-            world.warehouses.push(item)
+            items.push(item)
         }
     })
+
+    world.warehouses.push(new Warehouse(location, items));
 
     currLine += 2
 }
@@ -65,6 +73,11 @@ for (let i = 0; i < ordersNb; ++i) {
 // console.log(world.warehouses)
 // console.log(world.orders)
 
+// INIT
+for (let i = 0; i < world.dronesNb; i++) {
+	world.drones.push(new Drone(world.payload, world.warehouses[0].location, world));
+}
+
 let turnsLeft = world.turns;
 while (turnsLeft) {
 	// GAME LOGIC
@@ -73,4 +86,3 @@ while (turnsLeft) {
 
 	turnsLeft--;
 }
-
