@@ -1,7 +1,8 @@
 'use strict';
 
 class Warehouse {
-	constructor(location, items) {
+	constructor(id, location, items) {
+		this.id = id;
 		this.location = location;
 		this.items = items;
 	}

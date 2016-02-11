@@ -35,7 +35,7 @@ for (let i = 0; i < warehousesNb;  i++) {
     let location = data[currLine].split(' ')
     let products = data[currLine + 1].split(' ')
 
-    world.warehouses.push(new Warehouse(location, products));
+    world.warehouses.push(new Warehouse(i, location, products));
 
     currLine += 2
 }
@@ -47,7 +47,7 @@ for (let i = 0; i < ordersNb; ++i) {
     let productsNb = parseInt(data[currLine + 1])
     let productsType = parseInt(data[currLine + 2])
 
-    world.orders.push(new Order(deliveredLocation, productsType));
+    world.orders.push(new Order(i, deliveredLocation, productsType));
 
     currLine += 3
 }
@@ -59,7 +59,7 @@ console.log(world.orders)
 
 // INIT
 for (let i = 0; i < world.dronesNb; i++) {
-	world.drones.push(new Drone(world.payload, world.warehouses[0].location, world));
+	world.drones.push(new Drone(i, world.payload, world.warehouses[0].location, world));
 }
 
 let turnsLeft = world.turns;

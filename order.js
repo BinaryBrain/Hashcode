@@ -5,7 +5,8 @@ class Order {
 	// @param position Array [x, y]
 	// @param required map of required items. Keys are types, values are number of items of that type still needed.
 	//                 Example : required = {1: 8, 3: 7} -> 8 items of type 1 and 7 items of type 3
-	constructor(position, required) {
+	constructor(id, position, required) {
+		this.id = id;
 		this.position = position;
 		this.required = required;
 		this.completed = false;
