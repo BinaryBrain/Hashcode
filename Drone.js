@@ -18,15 +18,15 @@ class Drone {
 		this.world = world;
 	}
 
-	canLoadItem(type) {
+	canLoadItem(types) {
 		let itemWeight = 0;
 		
-		if (Array.isArray) {
-			for (let t of type) {
-				itemWeight += Item.getWeight(type);
-			}
-		} else {
-			itemWeight = Item.getWeight(type);
+		if (!Array.isArray(types)) {
+			types = [types];
+		}
+
+		for (let t of types) {
+			itemWeight += Item.getWeight(types);
 		}
 
 		return (itemWeight + this.currentWeight <= this.maxWeight);
@@ -39,7 +39,7 @@ class Drone {
 				var nbToWait = this.world.turns - this.tickNb;
 				this.currentCommand = ["WAIT", nbToWait];
 				this.remainingTicks = nbToWait;
-				wait(nbToWait);
+				this.wait(nbToWait);
 			} else {
 				this.currentOrder = this.world.orders.pop();
 				// LOAD THE NEXT ORDER
@@ -76,7 +76,7 @@ class Drone {
 						for (var i = 0; i < nbToTake; i++) {
 							itemsList.push(type);
 						}
-						load(itemsList);
+						this.load(itemsList, warehouse.id);
 						warehouse.remove(itemsList);
 						break;
 					}
@@ -90,6 +90,7 @@ class Drone {
 			this.currentItemsId = -1;
 			this.currentItemsCount = 0;
 			this.location = this.currentOrder.position;
+			this.deliver(this.currentItemsId, this.currentOrder.id);
 		}
 	}
 
@@ -103,15 +104,31 @@ class Drone {
 		this.tickNb++;
 	}
 
-	load(type) {
-		if (!canLoadItem(type)) {
+	load(types, warehouseId) {
+		if (!Array.isArray(types)) {
+			types = [types];
+		}
+
+		if (!canLoadItem(types)) {
 			console.error("Drone cannot load item.");
 		} else {
-			if (Array.isArray(type)) {
-				for (let t of type) {
-					load(type);
+			let knowTypes = [];
+
+			for (let type of types) {
+				if (!knowTypes[type]) {
+					knowTypes[type] = 1;
+				} else {
+					knowTypes[type]++;
 				}
-			} else {
+
+				for (var i = 0; i < knowTypes; i++) {
+					if (knowTypes[type]) {
+						Journal.load(this.id, warehouseId, i, knowTypes[i]);
+					}
+				}
+			}
+
+			for (let type of types) {
 				this.items.push(type);
 				this.currentWeight += Item.getWeight(type);
 			}
@@ -122,11 +139,14 @@ class Drone {
 		Journal.wait(this.id, nbTurns);
 	}
 
-	deliver(type) {
-		if (Array.isArray(type)) {
-			type.forEach(t => this.remove(t))
-		} else {
+	deliver(types, warehouseId) {
+		if (!Array.isArray(types)) {
+			types = [types]
+		}
+
+		for (let type of types) {
 			let found = false;
+
 			for (let i = 0; i < this.items; ++i) {
 				if (this.items[i] == type) {
 					this.items[i].splice(i, 1)
@@ -134,12 +154,26 @@ class Drone {
 					break
 				}
 			}
+		}
 
-			if (found) {
-				this.currentWeight -= item.getWeight();
+		for (let type of types) {
+			if (!knowTypes[type]) {
+				knowTypes[type] = 1;
 			} else {
-				console.error("Drone cannot deliver.")
+				knowTypes[type]++;
 			}
+
+			for (var i = 0; i < knowTypes; i++) {
+				if (knowTypes[type]) {
+					Journal.deliver(this.id, warehouseId, i, knowTypes[i]);
+				}
+			}
+		}
+
+		if (found) {
+			this.currentWeight -= item.getWeight();
+		} else {
+			console.error("Drone cannot deliver.")
 		}
 	}
 
