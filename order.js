@@ -49,12 +49,10 @@ class Order {
 		return this.completed;
 	}
 
-
 	/////////////////////////////////////////
 	/////////////////////////////////////////
 	// PRIVATE FUNCTIONS DO NOT USE OUTSIDE /
-	addItem(item) {
-		type = item.getType();
+	addItem(type) {
 		if (type in this.required) {
 			if (this.required[type] > 0) {
 				this.required[type]--;
