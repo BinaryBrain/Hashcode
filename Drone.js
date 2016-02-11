@@ -9,21 +9,41 @@ class Drone {
 	}
 
 	canLoadItem(item) {
-		return (item.getWeight() + this.currentWeight <= this.maxWeight);
+		let itemWeight = 0;
+		
+		if (Array.isArray) {
+			for (let i of item) {
+				itemWeight += i.getWeight();
+			}
+		} else {
+			itemWeight = item.getWeight();
+		}
+
+		return (itemWeight + this.currentWeight <= this.maxWeight);
 	}
 
-	// Load ONE item
 	load(item) {
-		if (!canLoadItem) {
-			console.log("Drone cannot load item");
+		if (!canLoadItem(item)) {
+			console.error("Drone cannot load item.");
 		} else {
-			this.items.push(item);
-			this.currentWeight += item.getWeight();
+			if (Array.isArray(item)) {
+				for (let i of item) {
+					load(item);
+				}
+			} else {
+				this.items.push(item);
+				this.currentWeight += item.getWeight();
+			}
 		}
 	}
 
-	// Deliver ONE item
 	deliver(item) {
+		if (Array.isArray(item)) {
+			for (let i of item) {
+				deliver(item);
+			}
+		}
+
 		let found = false;
 		for (let i = 0; i < this.items; i++) {
 			if (this.items[i].type === item.type) {
@@ -35,6 +55,8 @@ class Drone {
 
 		if (found) {
 			this.currentWeight -= item.getWeight();
+		} else {
+			console.error("Drone cannot deliver.")
 		}
 	}
 }
