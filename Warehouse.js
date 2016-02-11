@@ -18,7 +18,7 @@ class Warehouse {
 
 			let found = false;
 			for (let i = 0; i < this.items; ++i) {
-				if (this.items[i] === item[i]) {
+				if (this.items[i] === items) {
 					this.items[i].splice(i, 1)
 					found = true
 					break
