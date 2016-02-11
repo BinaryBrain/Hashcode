@@ -11,15 +11,15 @@ class Drone {
 		this.world = world;
 	}
 
-	canLoadItem(type) {
+	canLoadItem(types) {
 		let itemWeight = 0;
 		
-		if (!Array.isArray(type)) {
-			type = [type];
+		if (!Array.isArray(types)) {
+			types = [types];
 		}
 
-		for (let t of type) {
-			itemWeight += Item.getWeight(type);
+		for (let t of types) {
+			itemWeight += Item.getWeight(types);
 		}
 
 		return (itemWeight + this.currentWeight <= this.maxWeight);
@@ -56,18 +56,34 @@ class Drone {
 		}
 	}
 
-	deliver(type) {
-		if (!Array.isArray(type)) {
-			type = []
-			type.push(type)
+	deliver(types, warehouseId) {
+		if (!Array.isArray(types)) {
+			types = [types]
 		}
 
-		let found = false;
-		for (let i = 0; i < this.items; ++i) {
-			if (this.items[i] == type) {
-				this.items[i].splice(i, 1)
-				found = true
-				break
+		for (let type of types) {
+			let found = false;
+
+			for (let i = 0; i < this.items; ++i) {
+				if (this.items[i] == type) {
+					this.items[i].splice(i, 1)
+					found = true
+					break
+				}
+			}
+		}
+
+		for (let type of types) {
+			if (!knowTypes[type]) {
+				knowTypes[type] = 1;
+			} else {
+				knowTypes[type]++;
+			}
+
+			for (var i = 0; i < knowTypes; i++) {
+				if (knowTypes[type]) {
+					Journal.deliver(this.id, warehouseId, i, knowTypes[i]);
+				}
 			}
 		}
 
