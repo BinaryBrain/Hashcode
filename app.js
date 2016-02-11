@@ -7,7 +7,8 @@ const Journal = require('./Journal.js')
 const Drone = require('./Drone.js')
 const Order = require('./order.js')
 
-let input = './input/busy_day.in'
+// let input = './input/input_exemple.in'
+let input = './input/mother_of_all_warehouses.in'
 
 let data = fs.readFileSync(input).toString().split("\n")
 

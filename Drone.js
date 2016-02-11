@@ -1,6 +1,7 @@
 'use strict';
 
 let Item = require('./item.js');
+let Journal = require('./Journal.js');
 
 class Drone {
 	constructor(id, maxWeight, location, world) {
@@ -9,13 +10,13 @@ class Drone {
 		this.location = location;
 		this.items = [];
 		this.currentWeight = 0;
+		this.world = world;
 		this.currentOrder = this.world.orders.pop();
 		this.currentCommand = [];
 		this.remainingTicks = -1;
 		this.currentItemsId = 0;
 		this.currentItemsCount = 0;
 		this.tickNb = 0;
-		this.world = world;
 	}
 
 	canLoadItem(types) {
@@ -34,6 +35,7 @@ class Drone {
 
 	computeNextStep() {
 		if (this.currentOrder.isComplete()) {
+			console.log("isComplete")
 			if (this.world.orders.length == 0) {
 				// DRONE FINISHED ITS WORK :)
 				var nbToWait = this.world.turns - this.tickNb;
@@ -54,11 +56,13 @@ class Drone {
 				}
 				// Look for warehouses containing the item's type
 				var warehouses = this.world.warehouses;
-				for (var warehouse in warehouses) {
+				for (let warehouse of warehouses) {
 					// Counting number of items in that warehouse
 					var available = 0;
+					console.log(warehouse.items)
 					for (var item in warehouse.items) {
 						if (item == type) {
+							console.log("available")
 							available++;
 						}
 					}
@@ -109,7 +113,7 @@ class Drone {
 			types = [types];
 		}
 
-		if (!canLoadItem(types)) {
+		if (!this.canLoadItem(types)) {
 			console.error("Drone cannot load item.");
 		} else {
 			let knowTypes = [];
@@ -144,9 +148,8 @@ class Drone {
 			types = [types]
 		}
 
+		let found = false;
 		for (let type of types) {
-			let found = false;
-
 			for (let i = 0; i < this.items; ++i) {
 				if (this.items[i] == type) {
 					this.items[i].splice(i, 1)
@@ -155,6 +158,8 @@ class Drone {
 				}
 			}
 		}
+
+		let knowTypes = [];
 
 		for (let type of types) {
 			if (!knowTypes[type]) {
